@@ -232,6 +232,13 @@ function services() {
     _collect_all_file_data "/etc/zypp/services.d" $INFO_FILE
 }
 
+function os_release_data() {
+    local INFO_FILE="$DATA_LOCATION/osrelease.txt"
+    echo "#==[ OS Release Data ] =================================#" > $INFO_FILE
+    echo "# cat /etc/os-release" >> $INFO_FILE
+    cat /etc/os-release >> $INFO_FILE
+}
+
 framework
 credentials
 hosts
@@ -242,3 +249,4 @@ registration_data
 initialization_log
 repos
 services
+os_release_data
