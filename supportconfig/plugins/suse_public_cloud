@@ -239,6 +239,13 @@ function os_release_data() {
     cat /etc/os-release >> $INFO_FILE
 }
 
+function update_infra_data() {
+    local INFO_FILE="$DATA_LOCATION/updateinfrastructure.txt"
+    echo "#==[ Update Infrastructure ]=============================#" > $INFO_FILE
+    echo "# zypper ref" >> $INFO_FILE
+    zypper ref >> $INFO_FILE
+}
+
 framework
 credentials
 hosts
@@ -250,3 +257,4 @@ initialization_log
 repos
 services
 os_release_data
+update_infra_data
