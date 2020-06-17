@@ -1,19 +1,19 @@
 #!/bin/bash
 
 # Supportconfig Plugin for SUSE Public Cloud Images
-# 
+#
 # Copyright (C) 2016 SUSE LLC, Robert Schweikert <rjschwei@suse.com>
-# 
+#
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
 # as published by the Free Software Foundation; either version 2
 # of the License, or (at your option) any later version.
-# 
+#
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor,
@@ -66,6 +66,14 @@ function _collect_services_logs() {
     dest_file=$2
     for service in ${services[@]}; do
         _collect_service_log $service $dest_file
+    done
+}
+
+function _sanitize_data() {
+    local INFO_FILE=$1 && shift
+    local data_to_remove=($@)
+    for data in "${data_to_remove[@]}";do
+	sed "/$data/d" $INFO_FILE | sudo tee $INFO_FILE > /dev/null
     done
 }
 
@@ -150,6 +158,8 @@ function metadata() {
     if [ -e "/usr/bin/ec2metadata" ]; then
         echo "# /usr/bin/ec2metadata --api latest" >> $INFO_FILE
         /usr/bin/ec2metadata --api latest  >> $INFO_FILE
+	remove=("AccessKeyId" "SecretAccessKey"  "Token")
+	_sanitize_data "$INFO_FILE" "${remove[@]}"
     fi
     if [ -e "/usr/sbin/azuremetadata" ]; then
         echo "# /usr/sbin/azuremetadata -e" >> $INFO_FILE
@@ -164,6 +174,8 @@ function metadata() {
     if [ -e "/usr/bin/gcemetadata" ]; then
         echo "# /usr/bin/gcemetadata" >> $INFO_FILE
         /usr/bin/gcemetadata  >> $INFO_FILE
+	remove=("identity" "token")
+	_sanitize_data "$INFO_FILE" "${remove[@]}"
     fi
 }
 
@@ -180,7 +192,7 @@ function packages() {
         echo "$COMMON_PACKAGE_LIST not found" > $INFO_FILE
         echo "Possible install problem of supportutils-plugin-suse-public-cloud" > $INFO_FILE
     fi
-    
+
     if [ -e $FRAMEWORK_PACKAGE_LIST ]; then
         FRAMEWORK_PACKAGES=$(cat $FRAMEWORK_PACKAGE_LIST)
     else
