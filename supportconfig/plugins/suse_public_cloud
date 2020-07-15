@@ -171,6 +171,12 @@ function metadata() {
         echo "# /usr/sbin/azuremetadata -t" >> $INFO_FILE
         /usr/sbin/azuremetadata -t >> $INFO_FILE
     fi
+    if [ -e "/usr/bin/azuremetadata" ]; then
+        echo "# /usr/bin/azuremetadata --api latest" >> $INFO_FILE
+        /usr/bin/azuremetadata --api latest >> $INFO_FILE
+	remove=("subscriptionId" "subscriptions")
+	_sanitize_data "$INFO_FILE" "${remove[@]}"
+    fi
     if [ -e "/usr/bin/gcemetadata" ]; then
         echo "# /usr/bin/gcemetadata" >> $INFO_FILE
         /usr/bin/gcemetadata  >> $INFO_FILE
