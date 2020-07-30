@@ -188,8 +188,8 @@ function metadata() {
 function packages() {
     # Note order dependent, the framework function must be called first
     local INFO_FILE="$DATA_LOCATION/frameworkpackages.txt"
-    local COMMON_PACKAGE_LIST="/usr/lib/supportconfig/resources/rpmlist_pubcloud_common.rc"
-    local FRAMEWORK_PACKAGE_LIST="/usr/lib/supportconfig/resources/rpmlist_$FRAMEWORK.rc"
+    local COMMON_PACKAGE_LIST="/usr/lib/supportconfig/resources/rpmlist_pubcloud_common"
+    local FRAMEWORK_PACKAGE_LIST="/usr/lib/supportconfig/resources/rpmlist_$FRAMEWORK"
     echo "#==[ Packages ]=================================#" > $INFO_FILE
 
     if [ -e $COMMON_PACKAGE_LIST ]; then
