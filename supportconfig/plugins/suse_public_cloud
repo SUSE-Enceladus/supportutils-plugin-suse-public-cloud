@@ -223,7 +223,7 @@ function region_sever_config() {
         cat $REGIONSERVER_CONFIG >> $INFO_FILE
     else
         echo "File not found" >> $INFO_FILE
-        echo "This may not be an on demand instance" >> $INSTANCE
+        echo "This may not be an on demand instance" >> $INFO_FILE
     fi
 }
 
@@ -236,7 +236,7 @@ function registration_data() {
         cat $REGISTRATION_LOG >> $INFO_FILE
     else
         echo "File not found" >> $INFO_FILE
-        echo "This may not be an on demand instance" >> $INSTANCE
+        echo "This may not be an on demand instance" >> $INFO_FILE
     fi
 }
 
