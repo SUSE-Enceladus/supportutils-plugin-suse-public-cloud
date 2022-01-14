@@ -158,8 +158,8 @@ function metadata() {
     if [ -e "/usr/bin/ec2metadata" ]; then
         echo "# /usr/bin/ec2metadata --api latest" >> $INFO_FILE
         /usr/bin/ec2metadata --api latest  >> $INFO_FILE
-	remove=("AccessKeyId" "SecretAccessKey"  "Token")
-	_sanitize_data "$INFO_FILE" "${remove[@]}"
+        remove=("AccessKeyId" "SecretAccessKey"  "Token")
+        _sanitize_data "$INFO_FILE" "${remove[@]}"
     fi
     if [ -e "/usr/sbin/azuremetadata" ]; then
         echo "# /usr/sbin/azuremetadata -e" >> $INFO_FILE
@@ -174,14 +174,12 @@ function metadata() {
     if [ -e "/usr/bin/azuremetadata" ]; then
         echo "# /usr/bin/azuremetadata --api latest" >> $INFO_FILE
         /usr/bin/azuremetadata --api latest >> $INFO_FILE
-	remove=("subscriptionId" "subscriptions")
-	_sanitize_data "$INFO_FILE" "${remove[@]}"
     fi
     if [ -e "/usr/bin/gcemetadata" ]; then
         echo "# /usr/bin/gcemetadata" >> $INFO_FILE
         /usr/bin/gcemetadata  >> $INFO_FILE
-	remove=("identity" "token")
-	_sanitize_data "$INFO_FILE" "${remove[@]}"
+        remove=("token")
+        _sanitize_data "$INFO_FILE" "${remove[@]}"
     fi
 }
 
