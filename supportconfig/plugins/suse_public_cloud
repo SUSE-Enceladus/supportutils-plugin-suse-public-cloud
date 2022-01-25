@@ -107,17 +107,14 @@ function hosts() {
 }
 
 function initialization_log() {
-    # Note order dependent, the framework function must be called first
     local INFO_FILE="$DATA_LOCATION/instanceinit.txt"
-    if [ "$FRAMEWORK" = "Azure" ] && [ -e /var/log/waagent.log ]; then
-        echo "#== [ waagent.log ]=================================#" > $INFO_FILE
-        cat /var/log/waagent.log >> $INFO_FILE
-    fi
-    if [ "$FRAMEWORK" = "EC2" ]; then
-        echo "#== [ cloud-init info ]=============================#" > $INFO_FILE
+    echo "#== [ instance initialization info ]=============================#" > $INFO_FILE
+    if [ -e /var/log/cloud-init.log ]; then
+        echo "#== [ cloud-init info ]=============================#" >> $INFO_FILE
+        
         init_logs=( cloud-init.log cloud-init-output.log )
         for log in ${init_logs[@]}; do
-            echo "#== [ $log  ]=============================#" > $INFO_FILE
+            echo "#== [ $log  ]=============================#" >> $INFO_FILE
             cat /var/log/$log >> $INFO_FILE
             echo "" >> $INFO_FILE
             echo "" >> $INFO_FILE
@@ -133,14 +130,32 @@ function initialization_log() {
             echo "" >> $INFO_FILE
         fi
     fi
+    # Note order dependent, the framework function must be called first    
+    if [ "$FRAMEWORK" = "Azure" ] && [ -e /var/log/waagent.log ]; then
+        echo "#== [ waagent.log ]=================================#" >> $INFO_FILE
+        cat /var/log/waagent.log >> $INFO_FILE
+    fi
+    if [ "$FRAMEWORK" = "EC2" ]; then
+        if [ -e /var/log/ecs ]; then
+            ecs_logs=( ecs-agent.log ecs-init.log )
+            for log in ${ecs_logs[@]}; do
+                echo "#== [ $log  ]=============================#" >> $INFO_FILE
+                cat /var/log/ecs/$log >> $INFO_FILE
+                echo "" >> $INFO_FILE
+                echo "" >> $INFO_FILE
+            done
+        fi
+    fi
     if [ "$FRAMEWORK" = "GCE" ]; then
-        echo "#== [ google.log  ]=============================#" > $INFO_FILE
+        echo "#== [ google.log  ]=============================#" >> $INFO_FILE
         cat /var/log/google.log >> $INFO_FILE
         echo "" >> $INFO_FILE
         echo "" >> $INFO_FILE
 
         if [ -e /usr/bin/journalctl ]; then
-            services=( google google-accounts-manager google-address-manager google-startup-scripts google-shutdown-scripts )
+            # google google-accounts-manager google-address-manager
+            # should be removed in Dec 2025
+            services=( google google-accounts-manager google-address-manager google-startup-scripts google-shutdown-scripts google-guest-agent google-osconfig-agent )
             _collect_services_logs $services $INFO_FILE
         else
             echo "#==[ syslog messages ]====================#" >> $INFO_FILE
