@@ -1,10 +1,13 @@
 aws-cli
 cloud-init
+cloud-netconfig-ec2
+cloud-regionsrv-client-plugin-ec2
 python-ec2deprecateimg
 python-ec2metadata
 python-ec2publishimg
 python-ec2uploadimg
 python3-ec2deprecateimg
+python3-ec2imgutils
 python3-ec2metadata
 python3-ec2publishimg
 python3-ec2uploadimg

@@ -1,8 +1,14 @@
+azure-cli
 azuremetadata
+cloud-init
+cloud-netconfig-azure
+cloud-regionsrv-client-addon-azure
+cloud-regionsrv-client-plugin-azure
 python-azure-agent
 python-azure-sdk
 python-azurectl
 python3-azurectl
+python3-azuremetadata
 regionServiceClientConfigAzure
 regionServiceClientConfigSAPAzure
 supportutils-plugin-suse-public-cloud
