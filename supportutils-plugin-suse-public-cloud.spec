@@ -24,6 +24,7 @@ Group:          System/Monitoring
 Url:            https://github.com/SUSE/Enceladus
 Source0:        %{name}-%{version}.tar.bz2
 Requires:       supportutils
+Requires:       dmidecode
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:      noarch
 
