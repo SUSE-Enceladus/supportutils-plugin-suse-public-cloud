@@ -2,7 +2,7 @@
 
 # Supportconfig Plugin for SUSE Public Cloud Images
 #
-# Copyright (C) 2016 SUSE LLC, Robert Schweikert <rjschwei@suse.com>
+# Copyright (C) 2023 SUSE LLC, Robert Schweikert <rjschwei@suse.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -240,6 +240,18 @@ function region_sever_config() {
     fi
 }
 
+function registration_cache() {
+    local INFO_FILE="$DATA_LOCATION/registrationcache.txt"
+    echo "#==[ Registration Cache Content ]========================#" > $INFO_FILE
+    if [ -e /var/cache/cloudregister ]; then
+        ls /var/cache/cloudregister/* >> $INFO_FILE
+        mkdir "$DATA_LOCATION/regcache"
+        cp /var/cache/cloudregister/* "$DATA_LOCATION/regcache"
+    else
+        echo "/var/cache/cloudregister does not exist" >> $INFO_FILE
+    fi
+}
+
 function registration_data() {
     local INFO_FILE="$DATA_LOCATION/cloudregister.txt"
     echo "#==[ Registration Data ]=================================#" > $INFO_FILE
@@ -253,6 +265,18 @@ function registration_data() {
     fi
 }
 
+function registration_instance_args() {
+    local INFO_FILE="$DATA_LOCATION/registrationinstanceargs.txt"
+    echo "#==[ Instance Args For Registration ]====================#" > $INFO_FILE
+    local HASINSTARGCMD=$(grep dataProvider /etc/regionserverclnt.cfg)
+    if [ -n "$HASINSTARGCMD" ]; then
+        local INSTARGCMD=$(grep dataProvider /etc/regionserverclnt.cfg | cut -d"=" -f2)
+        $INSTARGCMD >> $INFO_FILE
+    else
+        echo "No instance arg command configured" >> $INFO_FILE
+    fi
+}
+    
 function repos() {
     local INFO_FILE="$DATA_LOCATION/repositories.txt"
     _collect_all_file_data "/etc/zypp/repos.d" $INFO_FILE
@@ -289,3 +313,5 @@ repos
 services
 os_release_data
 update_infra_data
+registration_instance_args
+registration_cache
