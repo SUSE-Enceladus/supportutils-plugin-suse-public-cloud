@@ -87,7 +87,7 @@ function framework() {
     echo "#==[ Determine Framework ]================================#" > $INFO_FILE
     echo "# dmidecode | grep -q amazon|Google|Microsoft" >> $INFO_FILE
 
-    if dmidecode | grep -q amazon; then
+    if dmidecode | grep -q -i amazon; then
         FRAMEWORK="EC2"
     fi
     if dmidecode | grep -q Google; then
