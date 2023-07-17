@@ -301,7 +301,7 @@ function update_infra_data() {
     zypper ref >> $INFO_FILE
 }
 
-function csp_billing_adapater() {
+function csp_billing_adapter() {
     local INFO_FILE="$DATA_LOCATION/csp_billing_adapter_config.txt"
     local BA_CONFIG_FILE="/etc/csp_billing_adapter/config.yaml"
     echo "#==[ CSP billing adapter config ]========================#" > $INFO_FILE
