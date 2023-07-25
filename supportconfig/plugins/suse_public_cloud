@@ -301,13 +301,25 @@ function update_infra_data() {
     zypper ref >> $INFO_FILE
 }
 
-function csp_billing_adapter() {
+function csp_billing_adapter_cfg() {
     local INFO_FILE="$DATA_LOCATION/csp_billing_adapter_config.txt"
     local BA_CONFIG_FILE="/etc/csp_billing_adapter/config.yaml"
     echo "#==[ CSP billing adapter config ]========================#" > $INFO_FILE
     if [ -e $BA_CONFIG_FILE ]; then
         echo "# cat $BA_CONFIG_FILE" >> $INFO_FILE
         cat $BA_CONFIG_FILE >> $INFO_FILE
+    else
+        echo "# not found" >> $INFO_FILE
+    fi
+}
+
+function csp_billing_adapter_log() {
+    local INFO_FILE="$DATA_LOCATION/csp_billing_adapter_log.txt"
+    local BA_LOG_FILE="/var/log/csp_billing_adapter.log"
+    echo "#==[ CSP billing adapter log ]========================#" > $INFO_FILE
+    if [ -e $BA_LOG_FILE ]; then
+        echo "# cat $BA_LOG_FILE" >> $INFO_FILE
+        cat $BA_LOG_FILE >> $INFO_FILE
     else
         echo "# not found" >> $INFO_FILE
     fi
@@ -327,4 +339,5 @@ os_release_data
 update_infra_data
 registration_instance_args
 registration_cache
-csp_billing_adapter
+csp_billing_adapter_cfg
+csp_billing_adapter_log
