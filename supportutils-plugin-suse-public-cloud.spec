@@ -16,7 +16,7 @@
 #
 
 Name:           supportutils-plugin-suse-public-cloud
-Version:        1.0.8
+Version:        1.0.9
 Release:        0
 Summary:        Public Cloud plugin for supportconfig
 License:        GPL-2.0+
