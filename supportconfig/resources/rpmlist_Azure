@@ -11,5 +11,4 @@ python3-azurectl
 python3-azuremetadata
 regionServiceClientConfigAzure
 regionServiceClientConfigSAPAzure
-supportutils-plugin-suse-public-cloud
 WALinuxAgent
