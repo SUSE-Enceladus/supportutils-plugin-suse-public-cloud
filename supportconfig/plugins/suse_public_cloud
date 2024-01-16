@@ -111,6 +111,8 @@ function csp_billing_adapter_meter_data() {
     fi
     if [ -e $CACHE ]; then
         cp $CACHE $INFO_CACHE
+    fi
+}
 
 function billing_flavor() {
     local INFO_FILE="$DATA_LOCATION/billingflavor.txt"
