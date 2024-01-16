@@ -77,6 +77,43 @@ function _sanitize_data() {
     done
 }
 
+function csp_billing_adapter_cfg() {
+    local INFO_FILE="$DATA_LOCATION/csp_billing_adapter_config.txt"
+    local BA_CONFIG_FILE="/etc/csp_billing_adapter/config.yaml"
+    echo "#==[ CSP billing adapter config ]========================#" > $INFO_FILE
+    if [ -e $BA_CONFIG_FILE ]; then
+        echo "# cat $BA_CONFIG_FILE" >> $INFO_FILE
+        cat $BA_CONFIG_FILE >> $INFO_FILE
+    else
+        echo "# not found" >> $INFO_FILE
+    fi
+}
+
+function csp_billing_adapter_log() {
+    local INFO_FILE="$DATA_LOCATION/csp_billing_adapter_log.txt"
+    local BA_LOG_FILE="/var/log/csp_billing_adapter.log"
+    echo "#==[ CSP billing adapter log ]========================#" > $INFO_FILE
+    if [ -e $BA_LOG_FILE ]; then
+        echo "# cat $BA_LOG_FILE" >> $INFO_FILE
+        cat $BA_LOG_FILE >> $INFO_FILE
+    else
+        echo "# not found" >> $INFO_FILE
+    fi
+}
+
+function csp_billing_adapter_meter_data() {
+    local INFO_ARCHIVE="$DATA_LOCATION/csp_billing_adapter_metering_archive.json"
+    local INFO_CACHE="$DATA_LOCATION/csp_billing_adapter_current_cycle.json"
+    local ARCHIVE="/var/lib/csp-billing-adapter/archive.json"
+    local CACHE="/var/lib/csp-billing-adapter/cache.json"
+    if [ -e $ARCHIVE ]; then
+        cp $ARCHIVE $INFO_ARCHIVE
+    fi
+    if [ -e $CACHE ]; then
+        cp $CACHE $INFO_CACHE
+    fi
+}
+
 function credentials() {
     local INFO_FILE="$DATA_LOCATION/credentials.txt"
     _collect_all_file_data "/etc/zypp/credentials.d" $INFO_FILE
@@ -301,30 +338,7 @@ function update_infra_data() {
     zypper ref >> $INFO_FILE
 }
 
-function csp_billing_adapter_cfg() {
-    local INFO_FILE="$DATA_LOCATION/csp_billing_adapter_config.txt"
-    local BA_CONFIG_FILE="/etc/csp_billing_adapter/config.yaml"
-    echo "#==[ CSP billing adapter config ]========================#" > $INFO_FILE
-    if [ -e $BA_CONFIG_FILE ]; then
-        echo "# cat $BA_CONFIG_FILE" >> $INFO_FILE
-        cat $BA_CONFIG_FILE >> $INFO_FILE
-    else
-        echo "# not found" >> $INFO_FILE
-    fi
-}
-
-function csp_billing_adapter_log() {
-    local INFO_FILE="$DATA_LOCATION/csp_billing_adapter_log.txt"
-    local BA_LOG_FILE="/var/log/csp_billing_adapter.log"
-    echo "#==[ CSP billing adapter log ]========================#" > $INFO_FILE
-    if [ -e $BA_LOG_FILE ]; then
-        echo "# cat $BA_LOG_FILE" >> $INFO_FILE
-        cat $BA_LOG_FILE >> $INFO_FILE
-    else
-        echo "# not found" >> $INFO_FILE
-    fi
-}
-
+# Collect all the data
 framework
 credentials
 hosts
@@ -341,3 +355,4 @@ registration_instance_args
 registration_cache
 csp_billing_adapter_cfg
 csp_billing_adapter_log
+csp_billing_adapter_meter_data
